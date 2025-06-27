@@ -70,6 +70,16 @@ tab.tabbrowser-tab *{
     transition: opacity 0.3s ease !important;
 }
 
+#nav-bar-customization-target,
+#PanelUI-button,
+#titlebar * {
+	z-index: 1;
+}
+
+#alltabs-button {
+	display: none;
+}
+
 /*------------------------------------------------*/
 /* Remove line between website content and top bar */
 
@@ -410,12 +420,28 @@ toolbar:not([customizing]) > #nav-bar-customization-target {
 
 
 #nav-bar {
-    margin-left: 35px !important;
+  display: flex !important;
+  justify-content: center !important; /* Центрирование содержимого */
 }
 
+
 #urlbar-container {
-    min-width: 0px !important;
-    flex: auto !important;
+  display: flex;
+  justify-content: center;  /* Центрирование по горизонтали */
+  align-items: center;      /* Центрирование по вертикали */
+  width: 100%;              /* Занимает всю ширину контейнера */
+  height: 100%;             /* Занимает всю высоту контейнера */
+  
+  
+  left: 45%;                /* Расположение по горизонтали */
+  transform: translate(-50%, -50%); /* Центрирование относительно контейнера */
+}
+
+#urlbar {
+  width: 50%;  /* Например, 50% от доступного пространства */
+  max-width: 1000px;  /* Максимальная ширина */
+  min-width: 0px;  /* Минимальная ширина */
+  box-sizing: border-box;  /* Учитывать padding и border в ширине */
 }
 
 
@@ -573,16 +599,16 @@ tab,
     justify-content: center;
 }
 
-#urlbar-container {
+/* #urlbar-container {
     flex: 1;
     max-width: 1000px;
     min-width: 200px;
     margin: auto !important;
-}
+} */
 
 #main-window #urlbar {
     z-index: 9999 !important;
-    width: 100% !important;
+    width: 50% !important;
     margin-top: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
@@ -591,7 +617,7 @@ tab,
 
 #main-window #urlbar[breakout][breakout-extend] {
     opacity: 0.97 !important;
-    width: 100% !important;
+    width: 50% !important;
     left: 0;
     right: 0;
     margin-left: auto !important;
@@ -917,32 +943,50 @@ tab,
 
 /* Expand Side bar on hover */
 
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
-  --sidebar-width: 40px;
-  --sidebar-hover-width: 512px;
-  position: relative;
-  min-width: var(--sidebar-width) !important;
-  width: var(--sidebar-width) !important;
-  max-width: var(--sidebar-width) !important;
-  z-index: 1;
-}
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]>#sidebar {
-  transition: min-width 200ms ease-in-out !important;
-  min-width: var(--sidebar-width) !important;
-  will-change: min-width;
-  transition-delay: 0.3s !important;  /* Delay on hover off */
-}
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:hover>#sidebar {
-  min-width: var(--sidebar-hover-width) !important;
-  transition-delay: 0.1s !important;  /* No delay on hover on */
-}
-
 #sidebar-box {
-    opacity: 0.9;
+  --sidebar-width: 60px;
+  --sidebar-hover-width: 400px;
+  
+  position: fixed !important;
+  left: 0;
+  top: 2.5%;
+  bottom: 0;
+  z-index: 3 !important;
+  
+  min-width: 60px !important;
+  max-width: 400px !important;
+  box-sizing: border-box;
 
+  width: var(--sidebar-width) !important;
+  background: transparent !important;
+  opacity: 0.8;
+  border-radius: 15px !important;
+  overflow: hidden;
+  
+  /* Плавный переход ширины и трансформации */
+  transition:
+    width 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s ease;
+  
+  /* Remove the transform line if you want to stop the panel from sliding off-screen */
+  transform: translateX(-10px);
 }
+
+/* При наведении - увеличиваем ширину и сдвигаем панель */
+#sidebar-box:hover {
+  /* Remove the transform line if you want to stop the panel from sliding off-screen */
+  transform: translateX(0);
+  width: var(--sidebar-hover-width) !important;
+}
+
+/* Убираем тёмный фон под боковой панелью */
+#sidebar-box,
+#sidebar,
+#webextpanels-window,
+.browser-sidebar2 {
+  background: transparent !important;
+}
+
 
 /*------------------------------------------------*/
 /* Hide Side bar header and line */
@@ -956,21 +1000,23 @@ tab,
 /* Sidebar Border */
 
 @media (prefers-color-scheme: dark) {
-#sidebar-box #sidebar,
-#sidebar-box #webextpanels-window {
+  #sidebar-box #sidebar,
+  #sidebar-box #webextpanels-window {
     border-radius: 15px !important;
     margin: 15px 15px 15px 5px !important;
     border: 3px solid rgba(204, 204, 204, 0.3);
-    transition: border 0.3s ease;
     box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
-}
+    background-color: #1a1a1a !important; /* или inherit */
+    overflow: hidden !important;
+  }
 
-#sidebar-box #sidebar:hover,
-#sidebar-box #webextpanels-:hover {
+  #sidebar-box #sidebar:hover,
+  #sidebar-box #webextpanels-window:hover {
     border: 3px solid rgba(204, 204, 204, 0.6);
     box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+  }
 }
-}
+
 
 @media (prefers-color-scheme: light) {
 #sidebar-box #sidebar,
@@ -1192,6 +1238,6 @@ tab,
   text-align: center  !important;
 }
 
-
-
-
+.browserStack {
+  margin-left: 40px !important;
+}
