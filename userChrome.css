@@ -1241,3 +1241,7 @@ tab,
 .browserStack {
   margin-left: 40px !important;
 }
+
+#main-window[inFullscreen] .browserStack {
+  margin-left: 0px !important; /* Или display: none !important; */
+}
